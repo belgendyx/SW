@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication - SW Platform</title>
+    <link rel="stylesheet" href="../assets/sdlc-theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-section">
+                <img src="https://investor.sw.gov.qa/SWPortal_DynamicThemeEAR/themes/html/swportal-assets/img/logo.svg" alt="SW Platform" class="logo">
+                <span class="site-title">SWAAIS API Documentation</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="service-catalog.html">Service Catalog</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+                <li><a href="interactive-api.html">Interactive API</a></li>
+                <li><a href="authentication.html" class="active">Authentication</a></li>
+                <li><a href="getting-started.html">Getting Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="hero" style="padding: 2rem;">
+        <div class="hero-container">
+            <h1 style="font-size: 2rem;">Authentication</h1>
+            <div class="accent-bar"></div>
+            <p class="subtitle">Secure your API integrations with JWT Bearer or Basic Auth.</p>
+        </div>
+    </div>
+
+    <div class="content">
+        <aside class="sidebar">
+            <div class="sidebar-title">On This Page</div>
+            <ul class="sidebar-nav">
+                <li><a href="#overview" class="active">Overview</a></li>
+                <li><a href="#jwt">JWT Bearer Auth</a></li>
+                <li><a href="#basic">Basic Auth</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <section id="overview" style="margin-bottom: 3rem;">
+                <h2>Authentication Overview</h2>
+                <div class="card">
+                    <p>Entities may implement authentication using either Bearer JWT or Basic Auth depending on their internal system capabilities.</p>
+                    <p style="margin-top: 1rem;">All API requests require authentication headers to ensure secure communication.</p>
+                </div>
+            </section>
+
+            <section id="jwt" style="margin-bottom: 3rem;">
+                <h2>JWT Bearer Authentication</h2>
+                
+                <div class="card">
+                    <h3>Request Header</h3>
+                    <div class="code-block" style="margin-top: 1rem;">
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Token Structure</h3>
+                    <p>JWT tokens should include:</p>
+                    <ul style="margin-top: 1rem; padding-left: 2rem;">
+                        <li>Entity identifier</li>
+                        <li>Token expiration time</li>
+                        <li>Appropriate claims for authorization</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="basic">
+                <h2>Basic Authentication</h2>
+                
+                <div class="card">
+                    <h3>Request Header</h3>
+                    <div class="code-block" style="margin-top: 1rem;">
+Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+                    </div>
+                    <p style="margin-top: 1rem; color: var(--text-secondary);">
+                        Basic Auth header is Base64-encoded username:password
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3>Security Considerations</h3>
+                    <ul style="padding-left: 2rem;">
+                        <li>Always use HTTPS for all API calls</li>
+                        <li>Rotate credentials regularly</li>
+                        <li>Store credentials securely</li>
+                        <li>Never commit credentials to source control</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="accent-bar" style="margin: 0 auto 1rem;"></div>
+            <p>© 2026 SWAAIS API Documentation</p>
+        </div>
+    </footer>
+</body>
+</html>

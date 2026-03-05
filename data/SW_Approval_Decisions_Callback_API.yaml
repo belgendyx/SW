@@ -1,0 +1,214 @@
+openapi: 3.0.3
+info:
+  title: Completion Callback API
+  version: 1.0.0
+  description: >
+    Callback API for approval decision updates. 
+    If the decision is APPROVED, associated payment items and approval details are included. 
+    For REJECTED or RETURNED, payment items are omitted.
+servers:
+- url: https://{SW_GN_IP}:8000
+  description: SW GN IP with fixed Port 8000 (HTTPS)
+
+paths:
+  /SWAAIS_CallBack:
+    post:
+      summary: Approval decision callback
+      description: >
+        Receives approval updates for a specific request. 
+        Status can be APPROVED, REJECTED, or RETURNED. 
+        Payment items and approval details are included only if the status is APPROVED.
+      tags:
+        - Approval Decisions Callback
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApprovalCallbackRequest'
+            example:
+              approvalRequestId: "13123123"
+              statusId: "APPROVED"
+              notes: "All documents verified successfully."
+              approvalNumber: "APPROVAL-2026-001"
+              startDate: "2026-02-18"
+              endDate: "2027-02-17"
+              attachment:
+                fileName: "approval_document.pdf"
+                fileBase64: "JVBERi0xLjcKJcTl8uXrp/Og0MTGCjEgMCBvYmoKPDwKL0xpbmVhcml6ZWQgMS9MID..."
+              paymentItems:
+                - itemCode: "Act1"
+                  amount: 500.0
+                  descriptionAr: "رسوم النشاطات"
+                  descriptionEn: "Activities fees"
+                - itemCode: "Act2"
+                  amount: 500.0
+                  descriptionAr: "رسوم النشاطات"
+                  descriptionEn: "Activities fees"
+      responses:
+        '200':
+          description: Callback processed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Response message
+                    example: "Callback received successfully"
+        '400':
+          description: Bad Request due to invalid or missing input data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                errorCode: "BR_001"
+                descriptionEn: "Invalid input data"
+                descriptionAr: "البيانات المدخلة غير صحيحة"
+                traceId: "1-3D7H1F8"
+        '401':
+          description: Unauthorized – Missing, invalid, or expired authentication token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                errorCode: "AUTH_401"
+                descriptionEn: "Authentication failed. Missing, invalid, or expired token."
+                descriptionAr: "فشل التحقق من الهوية. رمز الدخول مفقود أو غير صالح أو منتهي الصلاحية."
+                traceId: "1-3D7H1F8"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                errorCode: "SRV_001"
+                descriptionEn: "Unexpected server error"
+                descriptionAr: "خطأ غير متوقع في الخادم"
+                traceId: "1-3D7H1F8"
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ApprovalCallbackRequest:
+      type: object
+      required:
+        - approvalRequestId
+        - statusId
+      properties:
+        approvalRequestId:
+          type: string
+          description: >
+            Unique identifier of the approval request being updated.
+            This ID is the same as the one returned by the Submission API on submission acknowledgment.
+          example: "13123123"
+        statusId:
+          type: string
+          description: Status of the approval request. Allowed values APPROVED, REJECTED, RETURNED.
+          enum:
+            - APPROVED
+            - REJECTED
+            - RETURNED
+          example: "APPROVED"
+        notes:
+          type: string
+          description: Optional notes or comments regarding the approval.
+          example: "All documents verified successfully."
+        approvalNumber:
+          type: string
+          description: >
+            Official approval number issued for this request. 
+            Included only if statusId is APPROVED.
+          example: "APPROVAL-2026-001"
+        startDate:
+          type: string
+          format: date
+          description: Start date of the approval validity. Included only if statusId is APPROVED.
+          example: "2026-02-18"
+        endDate:
+          type: string
+          format: date
+          description: End date of the approval validity. Included only if statusId is APPROVED.
+          example: "2027-02-17"
+        attachment:
+          $ref: '#/components/schemas/Attachment'
+        paymentItems:
+          type: array
+          description: >
+            List of payment items associated with this approval. 
+            This field is included only if statusId is APPROVED; otherwise, it is omitted.
+          items:
+            $ref: '#/components/schemas/PaymentItem'
+          nullable: true
+
+    PaymentItem:
+      type: object
+      required:
+        - amount
+        - descriptionAr
+        - descriptionEn
+      properties:
+        itemCode:
+          type: integer
+          description: Unique identifier for the payment item.
+          example: "Act1"
+        amount:
+          type: number
+          format: double
+          description: Amount for the payment item.
+          example: 500.0
+        descriptionAr:
+          type: string
+          description: Description of the payment item in Arabic.
+          example: "رسوم النشاطات"
+        descriptionEn:
+          type: string
+          description: Description of the payment item in English.
+          example: "Activities fees"
+
+    Attachment:
+      type: object
+      description: >
+            Optional list of attachments related to the approval. 
+            Files must be Base64 encoded. Included only if statusId is APPROVED.
+      required:
+        - fileName
+        - fileBase64
+      properties:
+        fileName:
+          type: string
+          description: Name of the file including extension.
+          example: "approval_document.pdf"
+        fileBase64:
+          type: string
+          description: File content encoded as Base64.
+          example: "JVBERi0xLjcKJcTl8uXrp/Og0MTGCjEgMCBvYmoKPDwKL0xpbmVhcml6ZWQgMS9MID..."
+
+    ErrorResponse:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: Application-specific error code
+          example: "BR_001"
+        descriptionEn:
+          type: string
+          description: Error description in English
+          example: "Invalid input data"
+        descriptionAr:
+          type: string
+          description: Error description in Arabic
+          example: "البيانات المدخلة غير صحيحة"
+        traceId:
+          type: string
+          example: "1-3D7H1F8"

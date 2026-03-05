@@ -1,0 +1,179 @@
+openapi: 3.0.3
+info:
+  title: Manual Approval API
+  version: 1.0.0
+  description: >
+    API to submit manual approval data including approval number, validity dates,
+    entity names in Arabic and English, and optional attachments in Base64.
+    Entities may choose either Bearer JWT or Basic Auth for authentication.
+
+servers:
+  - url: 'https://{ENTITY_BASE_URL}'
+    description: Base URL provided by the entity during onboarding (HTTPS)
+
+paths:
+  /manual-approval:
+    post:
+      summary: Submit manual approval data
+      description: >
+        Push manual approval information including approval number, validity dates, 
+        entity information, and attachments (encoded in Base64). Attachments are optional.
+      operationId: manualApprovalRequest
+      tags:
+        - Approvals
+      security:
+        - BearerAuth: []
+        - BasicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManualApprovalRequest'
+            example:
+              swRequestNumber: "SW0011313"
+              entityNameAr: "الجهة المعتمدة"
+              entityNameEn: "Approved Entity"
+              approvalNumber: "AP-2026-001"
+              startDate: "2026-02-18"
+              endDate: "2027-02-17"
+              attachment:
+                fileName: "approval_document.pdf"
+                fileBase64: "JVBERi0xLjcKJcTl8uXrp/Og0MTGCjEgMCBvYmoKPDwKL0xpbmVhcml6ZWQgMS9MID..."
+
+      responses:
+        '200':
+          description: Manual approval submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManualApprovalSuccessResponse'
+              example:
+                data:
+                  message: "Manual approval data submitted successfully."
+        '400':
+          description: Bad Request due to invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized – missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden – entity not allowed to submit manual approval
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    BasicAuth:
+      type: http
+      scheme: basic
+
+  schemas:
+
+    ManualApprovalRequest:
+      type: object
+      required:
+        - swRequestNumber
+        - entityNameAr
+        - entityNameEn
+        - approvalNumber
+        - startDate
+        - endDate
+        - attachment
+      properties:
+        swRequestNumber:
+          type: string
+          description: Submission request number associated with this manual approval.
+          example: "REQ-2026-001"
+        entityNameAr:
+          type: string
+          description: Name of the entity in Arabic.
+          example: "الجهة المعتمدة"
+        entityNameEn:
+          type: string
+          description: Name of the entity in English.
+          example: "Approved Entity"
+        approvalNumber:
+          type: string
+          description: Official approval number issued for this request.
+          example: "APPROVAL-2026-001"
+        startDate:
+          type: string
+          format: date
+          description: Start date of the approval validity.
+          example: "2026-02-18"
+        endDate:
+          type: string
+          format: date
+          description: End date of the approval validity.
+          example: "2027-02-17"
+        attachment:
+          $ref: '#/components/schemas/Attachment'
+
+    Attachment:
+      type: object
+      required:
+        - fileName
+        - fileBase64
+      properties:
+        fileName:
+          type: string
+          description: Name of the file including extension.
+          example: "approval_document.pdf"
+        fileBase64:
+          type: string
+          description: File content encoded as Base64 (recommended max length ~7,000,000 chars for ~5MB file)
+          example: "JVBERi0xLjcKJcTl8uXrp/Og0MTGCjEgMCBvYmoKPDwKL0xpbmVhcml6ZWQgMS9MID..."
+
+    ManualApprovalSuccessResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - message
+          properties:
+            message:
+              type: string
+              description: Notification that manual approval info was successfully submitted
+              example: "Manual approval data submitted successfully."
+
+    ErrorResponse:
+      type: object
+      required:
+        - errorCode
+        - descriptionEn
+        - descriptionAr
+        - traceId
+      properties:
+        errorCode:
+          type: string
+        descriptionEn:
+          type: string
+        descriptionAr:
+          type: string
+        traceId:
+          type: string
+          description: Unique ID for tracing the request
+          example: "b7f9c2e4a1d34f5c"

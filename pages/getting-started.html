@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started - SW Platform</title>
+    <link rel="stylesheet" href="../assets/sdlc-theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-section">
+                <img src="https://investor.sw.gov.qa/SWPortal_DynamicThemeEAR/themes/html/swportal-assets/img/logo.svg" alt="SW Platform" class="logo">
+                <span class="site-title">SWAAIS API Documentation</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="service-catalog.html">Service Catalog</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+                <li><a href="interactive-api.html">Interactive API</a></li>
+                <li><a href="authentication.html">Authentication</a></li>
+                <li><a href="getting-started.html" class="active">Getting Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="hero" style="padding: 2rem;">
+        <div class="hero-container">
+            <h1 style="font-size: 2rem;">Getting Started</h1>
+            <div class="accent-bar"></div>
+            <p class="subtitle">Quick start guide to integrate with SW Platform in under 2 weeks.</p>
+        </div>
+    </div>
+
+    <div class="content">
+        <aside class="sidebar">
+            <div class="sidebar-title">Steps</div>
+            <ul class="sidebar-nav">
+                <li><a href="#step1" class="active">1. Register</a></li>
+                <li><a href="#step2">2. Download Specs</a></li>
+                <li><a href="#step3">3. Implement APIs</a></li>
+                <li><a href="#step4">4. Test</a></li>
+                <li><a href="#step5">5. Go Live</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <section id="step1" style="margin-bottom: 3rem;">
+                <h2>Step 1: Register for Integration</h2>
+                <div class="card">
+                    <p>Contact SW Platform team to register for API access:</p>
+                    <ul style="margin-top: 1rem; padding-left: 2rem;">
+                        <li>Provide organization details</li>
+                        <li>Specify technical contact</li>
+                        <li>Describe integration use case</li>
+                    </ul>
+                    <p style="margin-top: 1rem;">Timeline: Credentials provided within 24-48 hours</p>
+                </div>
+            </section>
+
+            <section id="step2" style="margin-bottom: 3rem;">
+                <h2>Step 2: Download OpenAPI Specifications</h2>
+                <div class="card">
+                    <p>Download all required YAML files:</p>
+                    <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <a href="../data/SW_Request_Submission_API.yaml" download class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Submission API
+                        </a>
+                        <a href="../data/SW_Request_Completion_API.yaml" download class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Completion API
+                        </a>
+                        <a href="../data/SW_Cancel_Request_API.yaml" download class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Cancel API
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="step3" style="margin-bottom: 3rem;">
+                <h2>Step 3: Implement Required APIs</h2>
+                <div class="card">
+                    <p>Implement 5 REST API endpoints:</p>
+                    <ol style="margin-top: 1rem; padding-left: 2rem;">
+                        <li style="margin-bottom: 0.5rem;"><strong>POST /submission</strong> - Receive approval requests</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>POST /completion</strong> - Receive completion data</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>POST /cancel</strong> - Handle cancellations</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>POST /manual-approval</strong> - Process manual approvals</li>
+                        <li><strong>POST</strong> to SW callback - Send approval decisions</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="step4" style="margin-bottom: 3rem;">
+                <h2>Step 4: Test Your Integration</h2>
+                <div class="card">
+                    <p>Use our <a href="interactive-api.html" style="color: var(--sdlc-light-blue);">Interactive API Explorer</a> to:</p>
+                    <ul style="margin-top: 1rem; padding-left: 2rem;">
+                        <li>Test request/response formats</li>
+                        <li>Validate payload structures</li>
+                        <li>Test error handling</li>
+                        <li>Verify authentication</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="step5">
+                <h2>Step 5: Go Live</h2>
+                <div class="card">
+                    <p>Once testing is complete:</p>
+                    <ol style="margin-top: 1rem; padding-left: 2rem;">
+                        <li>Notify SW Platform team</li>
+                        <li>Receive production credentials</li>
+                        <li>Switch to production endpoints</li>
+                        <li>Monitor initial transactions</li>
+                        <li>You're live! 🎉</li>
+                    </ol>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <a href="interactive-api.html" class="btn btn-primary">
+                        <i class="fas fa-play-circle"></i> Try Interactive API Now
+                    </a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="accent-bar" style="margin: 0 auto 1rem;"></div>
+            <p>© 2026 SWAAIS API Documentation</p>
+        </div>
+    </footer>
+</body>
+</html>

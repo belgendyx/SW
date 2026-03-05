@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive API Explorer - SW Platform</title>
+    <link rel="stylesheet" href="../assets/sdlc-theme.css">
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui.css" />
+    <style>
+        .swagger-ui .topbar { display: none; }
+        body { margin: 0; padding: 0; }
+        #swagger-ui { max-width: 1400px; margin: 0 auto; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-section">
+                <img src="https://investor.sw.gov.qa/SWPortal_DynamicThemeEAR/themes/html/swportal-assets/img/logo.svg" alt="SW Platform" class="logo">
+                <span class="site-title">SWAAIS API Documentation</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="service-catalog.html">Service Catalog</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+                <li><a href="interactive-api.html" class="active">Interactive API</a></li>
+                <li><a href="authentication.html">Authentication</a></li>
+                <li><a href="getting-started.html">Getting Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="hero" style="padding: 2rem;">
+        <div class="hero-container">
+            <h1 style="font-size: 2rem;">🚀 Interactive API Explorer</h1>
+            <div class="accent-bar"></div>
+            <p class="subtitle">Test all SW Platform APIs directly in your browser. Select an API from the dropdown, explore endpoints, and try live requests.</p>
+        </div>
+    </div>
+
+    <div id="swagger-ui"></div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="accent-bar" style="margin: 0 auto 1rem;"></div>
+            <p>© 2026 SWAAIS API Documentation</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-bundle.js"></script>
+    <script src="https://unpkg.com/swagger-ui-dist@5.10.5/swagger-ui-standalone-preset.js"></script>
+    <script>
+        window.onload = function() {
+            window.ui = SwaggerUIBundle({
+                urls: [
+                    { url: "../data/SW_Request_Submission_API.yaml", name: "Request Submission API" },
+                    { url: "../data/SW_Request_Completion_API.yaml", name: "Request Completion API" },
+                    { url: "../data/SW_Cancel_Request_API.yaml", name: "Cancel Request API" },
+                    { url: "../data/SW_Manual_Approval_API.yaml", name: "Manual Approval API" },
+                    { url: "../data/SW_Approval_Decisions_Callback_API.yaml", name: "Approval Decisions Callback" }
+                ],
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
+                plugins: [SwaggerUIBundle.plugins.DownloadUrl],
+                layout: "StandaloneLayout",
+                defaultModelsExpandDepth: 1,
+                docExpansion: 'list',
+                filter: true,
+                tryItOutEnabled: true
+            });
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture - SW Platform</title>
+    <link rel="stylesheet" href="../assets/sdlc-theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-section">
+                <img src="https://investor.sw.gov.qa/SWPortal_DynamicThemeEAR/themes/html/swportal-assets/img/logo.svg" alt="SW Platform" class="logo">
+                <span class="site-title">SWAAIS API Documentation</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="service-catalog.html">Service Catalog</a></li>
+                <li><a href="architecture.html" class="active">Architecture</a></li>
+                <li><a href="interactive-api.html">Interactive API</a></li>
+                <li><a href="authentication.html">Authentication</a></li>
+                <li><a href="getting-started.html">Getting Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="hero" style="padding: 2rem;">
+        <div class="hero-container">
+            <h1 style="font-size: 2rem;">Integration Architecture</h1>
+            <div class="accent-bar"></div>
+            <p class="subtitle">Service-oriented architecture for SW Platform external integrations.</p>
+        </div>
+    </div>
+
+    <div class="content">
+        <aside class="sidebar">
+            <div class="sidebar-title">On This Page</div>
+            <ul class="sidebar-nav">
+                <li><a href="#overview" class="active">Overview</a></li>
+                <li><a href="#flows">Request Flows</a></li>
+                <li><a href="#responsibilities">Responsibilities</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <section id="overview" style="margin-bottom: 3rem;">
+                <h2>Architecture Overview</h2>
+                <div class="card">
+                    <p>The integration follows a service-oriented architecture where:</p>
+                    <ul style="margin-top: 1rem; padding-left: 2rem;">
+                        <li style="margin-bottom: 0.5rem;">External entities expose REST APIs</li>
+                        <li style="margin-bottom: 0.5rem;">SW Platform consumes these APIs using standardized payloads</li>
+                        <li style="margin-bottom: 0.5rem;">All services follow a unified payload envelope</li>
+                        <li style="margin-bottom: 0.5rem;">Authentication via JWT or Basic Auth</li>
+                        <li>Async callbacks for approval decisions</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="flows" style="margin-bottom: 3rem;">
+                <h2>Request Flow Diagrams</h2>
+                
+                <div class="card">
+                    <h3 style="margin-bottom: 1rem;">Submission Flow</h3>
+                    <img src="../flows/submission.png" alt="Submission Flow" style="max-width: 100%; border-radius: 8px;">
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 1rem;">Cancellation Flow</h3>
+                    <img src="../flows/cancellation.png" alt="Cancellation Flow" style="max-width: 100%; border-radius: 8px;">
+                </div>
+            </section>
+
+            <section id="responsibilities">
+                <h2>Responsibilities</h2>
+                
+                <div class="card">
+                    <h3 style="color: var(--sdlc-light-blue);">External Entity Responsibilities</h3>
+                    <ul style="margin-top: 1rem; padding-left: 2rem;">
+                        <li>Expose 5 REST API endpoints</li>
+                        <li>Implement authentication (JWT or Basic Auth)</li>
+                        <li>Process requests and return responses within SLA</li>
+                        <li>Send callback with approval decisions</li>
+                        <li>Maintain endpoint availability</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3 style="color: var(--sdlc-green);">SW Platform Responsibilities</h3>
+                    <ul style="margin-top: 1rem; padding-left: 2rem;">
+                        <li>Provide callback endpoint for decisions</li>
+                        <li>Send requests in standardized format</li>
+                        <li>Handle responses and errors</li>
+                        <li>Provide OpenAPI specifications</li>
+                        <li>Maintain documentation</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="accent-bar" style="margin: 0 auto 1rem;"></div>
+            <p>© 2026 SWAAIS API Documentation</p>
+        </div>
+    </footer>
+</body>
+</html>

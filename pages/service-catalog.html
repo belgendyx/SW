@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Catalog - SW Platform</title>
+    <link rel="stylesheet" href="../assets/sdlc-theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-section">
+                <img src="https://investor.sw.gov.qa/SWPortal_DynamicThemeEAR/themes/html/swportal-assets/img/logo.svg" alt="SW Platform" class="logo">
+                <span class="site-title">SWAAIS API Documentation</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="service-catalog.html" class="active">Service Catalog</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+                <li><a href="interactive-api.html">Interactive API</a></li>
+                <li><a href="authentication.html">Authentication</a></li>
+                <li><a href="getting-started.html">Getting Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="hero" style="padding: 2rem;">
+        <div class="hero-container">
+            <h1 style="font-size: 2rem;">API Service Catalog</h1>
+            <div class="accent-bar"></div>
+            <p class="subtitle">Complete overview of all available SW Platform APIs for external integration.</p>
+        </div>
+    </div>
+
+    <div class="content">
+        <aside class="sidebar">
+            <div class="sidebar-title">Categories</div>
+            <ul class="sidebar-nav">
+                <li><a href="#external" class="active">External APIs</a></li>
+                <li><a href="#sw-apis">SW Provided APIs</a></li>
+                <li><a href="#specs">OpenAPI Specs</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <section id="external" style="margin-bottom: 3rem;">
+                <h2>External APIs (You Implement)</h2>
+                <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">External entities must implement these endpoints for SW Platform to call:</p>
+                
+                <div class="api-card" onclick="window.location='interactive-api.html'">
+                    <div><div class="api-method method-post">POST</div></div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 0.5rem;">Request Submission API</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Submit approval request data including request info, applicant details, company information, partners, managers, branches, and attachments.</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                            <code>/submission</code>
+                        </div>
+                    </div>
+                    <div><i class="fas fa-arrow-right" style="color: var(--sdlc-light-blue);"></i></div>
+                </div>
+
+                <div class="api-card" onclick="window.location='interactive-api.html'">
+                    <div><div class="api-method method-post">POST</div></div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 0.5rem;">Request Completion API</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Complete approval requests with payment receipt details after payment is processed.</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                            <code>/completion</code>
+                        </div>
+                    </div>
+                    <div><i class="fas fa-arrow-right" style="color: var(--sdlc-light-blue);"></i></div>
+                </div>
+
+                <div class="api-card" onclick="window.location='interactive-api.html'">
+                    <div><div class="api-method method-post">POST</div></div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 0.5rem;">Cancel Request API</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Cancel an existing approval request using the approvalRequestId.</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                            <code>/api/v1/approval-requests/{id}/cancel</code>
+                        </div>
+                    </div>
+                    <div><i class="fas fa-arrow-right" style="color: var(--sdlc-light-blue);"></i></div>
+                </div>
+
+                <div class="api-card" onclick="window.location='interactive-api.html'">
+                    <div><div class="api-method method-post">POST</div></div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 0.5rem;">Manual Approval API</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Submit manual approval data with approval number, validity dates, and optional attachments.</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                            <code>/manual-approval</code>
+                        </div>
+                    </div>
+                    <div><i class="fas fa-arrow-right" style="color: var(--sdlc-light-blue);"></i></div>
+                </div>
+            </section>
+
+            <section id="sw-apis" style="margin-bottom: 3rem;">
+                <h2>SW Provided APIs (We Provide)</h2>
+                <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">SW Platform provides these endpoints for external entities to call:</p>
+                
+                <div class="api-card" onclick="window.location='interactive-api.html'">
+                    <div><div class="api-method method-post">POST</div></div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 0.5rem;">Approval Decisions Callback</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Send approval decision updates (APPROVED, REJECTED, RETURNED) to SW Platform.</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                            <code>/api/v1/approval-decisions</code>
+                        </div>
+                    </div>
+                    <div><i class="fas fa-arrow-right" style="color: var(--sdlc-light-blue);"></i></div>
+                </div>
+            </section>
+
+            <section id="specs">
+                <h2>Download OpenAPI Specifications</h2>
+                <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">Download YAML files for Postman, code generation, or documentation tools:</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+                    <a href="../data/SW_Request_Submission_API.yaml" download class="card" style="text-decoration: none; display: block;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <i class="fas fa-file-code" style="font-size: 2rem; color: var(--sdlc-light-blue);"></i>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 0.25rem;">Submission API</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">OpenAPI 3.0 YAML</div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="../data/SW_Request_Completion_API.yaml" download class="card" style="text-decoration: none; display: block;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <i class="fas fa-file-code" style="font-size: 2rem; color: var(--sdlc-light-blue);"></i>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 0.25rem;">Completion API</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">OpenAPI 3.0 YAML</div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="../data/SW_Cancel_Request_API.yaml" download class="card" style="text-decoration: none; display: block;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <i class="fas fa-file-code" style="font-size: 2rem; color: var(--sdlc-light-blue);"></i>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 0.25rem;">Cancel API</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">OpenAPI 3.0 YAML</div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="../data/SW_Manual_Approval_API.yaml" download class="card" style="text-decoration: none; display: block;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <i class="fas fa-file-code" style="font-size: 2rem; color: var(--sdlc-light-blue);"></i>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 0.25rem;">Manual Approval API</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">OpenAPI 3.0 YAML</div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="../data/SW_Approval_Decisions_Callback_API.yaml" download class="card" style="text-decoration: none; display: block;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <i class="fas fa-file-code" style="font-size: 2rem; color: var(--sdlc-light-blue);"></i>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 0.25rem;">Callback API</div>
+                                <div style="font-size: 0.85rem; color: var(--text-muted);">OpenAPI 3.0 YAML</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="accent-bar" style="margin: 0 auto 1rem;"></div>
+            <p>© 2026 SWAAIS API Documentation</p>
+        </div>
+    </footer>
+</body>
+</html>

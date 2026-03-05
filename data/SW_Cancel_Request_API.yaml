@@ -1,0 +1,144 @@
+openapi: 3.0.3
+info:
+  title: Cancel Approval Request API
+  version: 1.0.0
+  description: >
+    API for cancelling an approval request using the approvalRequestId from the Submission API. 
+    Entities may implement authentication using either Bearer JWT or Basic Auth depending on their system.
+
+servers:
+  - url: 'https://{ENTITY_BASE_URL}'
+    description: Base URL provided by the entity during onboarding (HTTPS)
+
+paths:
+  /cancel:
+    post:
+      summary: Cancel approval request
+      description: >
+        Cancels an existing approval request.
+        Entities may choose either JWT or Basic Auth for authentication.
+      operationId: cancelApprovalRequest
+      tags:
+        - Approval Requests
+      security:
+        - BearerAuth: []
+        - BasicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelApprovalRequest'
+            example:
+              approvalRequestId: "12312312"
+              swRequestNumber: "SR1231312"
+      responses:
+        '200':
+          description: Cancellation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelSuccessResponse'
+              example:
+                data:
+                  message: "Approval request successfully cancelled."
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized – missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden – user not allowed to cancel this approval request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found – approval request not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict – approval request cannot be cancelled due to current status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    BasicAuth:
+      type: http
+      scheme: basic
+
+  schemas:
+
+    CancelApprovalRequest:
+      type: object
+      required:
+        - approvalRequestId
+      properties:
+        approvalRequestId:
+          type: string
+          description: Approval Request Identifier returned by the Submission API. Required for cancellation.
+          example: "12312312"
+        swRequestNumber:
+          type: string
+          description: SW Request Number provided in the Submission API. Required for traceability.
+          example: "SR1231312"
+
+    CancelSuccessResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - message
+          properties:
+            message:
+              type: string
+              description: Notification that the approval request was successfully cancelled
+              example: "Approval request successfully cancelled."
+
+    ErrorResponse:
+      type: object
+      required:
+        - errorCode
+        - descriptionEn
+        - descriptionAr
+        - traceId
+      properties:
+        errorCode:
+          type: string
+          example: "BR_001"
+        descriptionEn:
+          type: string
+          example: "Invalid input data"
+        descriptionAr:
+          type: string
+          example: "البيانات المدخلة غير صحيحة"
+        traceId:
+          type: string
+          description: Unique ID for tracing the request
+          example: "b7f9c2e4a1d34f5c"

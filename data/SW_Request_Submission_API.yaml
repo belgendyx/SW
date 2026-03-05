@@ -1,0 +1,222 @@
+openapi: 3.0.3
+info:
+  title: Submission API
+  version: 1.0.0
+  description: API schema for submitting approval requests. 
+    Entities may implement authentication using either Bearer JWT or Basic Auth depending on their internal system.
+    Each entity will have a separate base URL.
+
+servers:
+- url: 'https://{ENTITY_BASE_URL}'
+  description: Provided by external entity during onboarding (HTTPS)
+
+paths:
+  /submission:
+    post:
+      summary: Submit approval request data
+      description: >
+        Accepts the full submission payload containing request info, applicant info, and approval form.
+        Entities may choose to authenticate using either JWT or Basic Auth.
+      operationId: submitApprovalRequest
+      security:
+        - BearerAuth: []
+        - BasicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmissionRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalSuccessResponse'
+              example:
+                data:
+                  approvalRequestId: "12312312"
+                  timestamp: "2026-01-02"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized – missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden – user not allowed to cancel this approval request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found – approval request not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict – approval request cannot be cancelled due to current status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+
+  securitySchemes:
+
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+    BasicAuth:
+      type: http
+      scheme: basic
+
+  schemas:
+
+    SubmissionRequest:
+      type: object
+      properties:
+        requestInfo:
+          $ref: '#/components/schemas/RequestInfo'
+        applicantInfo:
+          $ref: '#/components/schemas/ApplicantInfo'
+        approvalForm:
+          $ref: '#/components/schemas/ApprovalForm'
+
+    IdentityTypePerson:
+      type: string
+      description: Identity document type for individuals (01 = QID, 02 = Passport).
+      enum:
+        - "01"
+        - "02"
+      example: "01"
+
+    RequestInfo:
+      type: object
+      properties:
+        requestNumber:
+          type: string
+        requestStatusAr:
+          type: string
+        requestStatusEn:
+          type: string
+        serviceRequestTypeAr:
+          type: string
+        serviceRequestTypeEn:
+          type: string
+        submitDate:
+          type: string
+          format: date
+          example: 1990-12-31
+        approvalRequestAr:
+          type: string
+        approvalRequestEn:
+          type: string
+        approvalRequestId:
+          type: string
+        paymentAmount:
+          type: string
+
+    ApplicantInfo:
+      type: object
+      properties:
+        identityNo:
+          type: string
+        identityTypeId:
+          $ref: '#/components/schemas/IdentityTypePerson'
+        nameAr:
+          type: string
+        nameEn:
+          type: string
+        email:
+          type: string
+          format: email
+        mobile:
+          type: string
+        nationalityCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+          pattern: '^[A-Z]{2}$'
+          example: "SA"
+        nationalityAr:
+          type: string
+        nationalityEn:
+          type: string
+        birthDate:
+          type: string
+          format: date
+          example: 1990-12-31
+
+    ApprovalForm:
+      type: object
+      properties:
+        formCode:
+          type: string
+        formNameEn:
+          type: string
+        formNameAr:
+          type: string
+        additionalInformationJsonString:
+          type: string
+          example: "{\"key1\":\"value1\",\"key2\":\"value2\",\"key3\":true,\"key4\":123}"
+
+    ApprovalSuccessResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - approvalRequestId
+            - timestamp
+          properties:
+            approvalRequestId:
+              type: string
+              description: Unique identifier of the approval request.
+              example: "12312312"
+            timestamp:
+              type: string
+              format: date-time
+              description: UTC timestamp when the approval request was submitted.
+              example: "2026-01-02T10:15:30Z"
+
+    ErrorResponse:
+      type: object
+      required:
+        - errorCode
+        - descriptionEn
+        - descriptionAr
+        - traceId
+      properties:
+        errorCode:
+          type: string
+          example: "BR_001"
+        descriptionEn:
+          type: string
+          example: "Invalid input data"
+        descriptionAr:
+          type: string
+          example: "البيانات المدخلة غير صحيحة"
+        traceId:
+          type: string
+          description: Unique ID for tracing the request
+          example: "b7f9c2e4a1d34f5c"

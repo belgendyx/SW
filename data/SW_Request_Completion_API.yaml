@@ -1,0 +1,255 @@
+openapi: 3.0.3
+info:
+  title: Completion API
+  version: 1.0.0
+  description: >
+    API to notify entities regarding completion of approval requests including company permits and payment receipt details.
+    Entities may choose either Bearer JWT or Basic Auth for authentication.
+
+servers:
+  - url: 'https://{ENTITY_BASE_URL}'
+    description: Base URL provided by the entity during onboarding (HTTPS)
+
+paths:
+  /completion:
+    post:
+      summary: Notify completion of approval request
+      description: >
+        Push completion information including company permits and payment receipt details.
+        Entities may choose either JWT or Basic Auth for authentication.
+      operationId: completeApprovalRequest
+      tags:
+        - Approvals
+      security:
+        - BearerAuth: []
+        - BasicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompletionRequest'
+      responses:
+        '200':
+          description: Completion notification successfully processed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionSuccessResponse'
+              example:
+                data:
+                  message: "Completion information successfully submitted."
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized – missing or invalid authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden – entity not allowed to submit completion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    BasicAuth:
+      type: http
+      scheme: basic
+
+  schemas:
+
+    CompletionRequest:
+      type: object
+      required:
+        - requestInfo
+        - companyInfo
+        - paymentReceiptDetails
+      properties:
+        requestInfo:
+          $ref: '#/components/schemas/RequestInfo'
+        companyInfo:
+          $ref: '#/components/schemas/CompanyInfo'
+        paymentReceiptDetails:
+          $ref: '#/components/schemas/PaymentRequest'
+
+    RequestInfo:
+      type: object
+      required:
+        - requestNumber
+        - approvalRequestId
+      properties:
+        requestNumber:
+          type: string
+          description: Unique identifier of the SW request.
+        approvalRequestId:
+          type: string
+          description: Unique Approval Request Id received in Submission acknowledgement.
+
+    CompanyInfo:
+      type: object
+      required:
+        - nameEn
+        - nameAr
+      properties:
+        nameEn:
+          type: string
+          description: Company name in English
+        nameAr:
+          type: string
+          description: Company name in Arabic
+        establishDate:
+          type: string
+          format: date
+          description: Company establishment date (YYYY-MM-DD)
+        entityPermits:
+          type: array
+          description: List of commercial registrations and permits
+          items:
+            $ref: '#/components/schemas/EntityPermit'
+        entityIdentifiers:
+          type: array
+          description: List of entity identifiers (EID, TIN, etc.)
+          items:
+            $ref: '#/components/schemas/EntityIdentifier'
+
+    EntityPermit:
+      type: object
+      required:
+        - permitNumber
+        - permitType
+      properties:
+        permitNumber:
+          type: string
+        permitType:
+          type: string
+          enum:
+            - CR
+            - CP
+        startDate:
+          type: string
+          format: date
+        expiryDate:
+          type: string
+          format: date
+
+    EntityIdentifier:
+      type: object
+      required:
+        - idNumber
+        - idType
+      properties:
+        idNumber:
+          type: string
+        idType:
+          type: string
+          enum:
+            - EID
+            - TAX
+        issueDate:
+          type: string
+          format: date
+        expiryDate:
+          type: string
+          format: date
+
+    PaymentRequest:
+      type: object
+      required:
+        - entityNameAr
+        - entityNameEn
+        - paymentDate
+        - amount
+        - currency
+      properties:
+        entityNameAr:
+          type: string
+        entityNameEn:
+          type: string
+        paymentDate:
+          type: string
+          format: date-time
+        amount:
+          type: number
+          format: double
+        currency:
+          type: string
+        description:
+          type: string
+        paymentDetails:
+          type: object
+          properties:
+            paymentType:
+              type: string
+            transactionAmount:
+              type: number
+              format: double
+            refNumber:
+              type: string
+            authNumber:
+              type: string
+            terminalId:
+              type: string
+            seqNumber:
+              type: string
+            cardDetails:
+              type: object
+              properties:
+                cardType:
+                  type: string
+                cardNumber:
+                  type: string
+                expiryDate:
+                  type: string
+
+    CompletionSuccessResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: object
+          required:
+            - message
+          properties:
+            message:
+              type: string
+              description: Notification that completion info was successfully submitted
+              example: "Completion information successfully submitted."
+
+    ErrorResponse:
+      type: object
+      required:
+        - errorCode
+        - descriptionEn
+        - descriptionAr
+        - traceId
+      properties:
+        errorCode:
+          type: string
+        descriptionEn:
+          type: string
+        descriptionAr:
+          type: string
+        traceId:
+          type: string
+          description: Unique ID for tracing the request
+          example: "b7f9c2e4a1d34f5c"

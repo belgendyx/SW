@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SW Platform API Documentation - SDLC</title>
+    <meta name="description" content="Official SW Platform integration standards and API documentation">
+    <link rel="stylesheet" href="assets/sdlc-theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-section">
+                <img src="https://investor.sw.gov.qa/SWPortal_DynamicThemeEAR/themes/html/swportal-assets/img/logo.svg" alt="SW Platform" class="logo">
+                <span class="site-title">SWAAIS API Documentation</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="pages/service-catalog.html">Service Catalog</a></li>
+                <li><a href="pages/architecture.html">Architecture</a></li>
+                <li><a href="pages/interactive-api.html">Interactive API</a></li>
+                <li><a href="pages/authentication.html">Authentication</a></li>
+                <li><a href="pages/getting-started.html">Getting Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-container">
+            <div class="version-badge">
+                <span class="pulse-dot"></span>
+                <span>Integration Guide v1.0.0</span>
+            </div>
+            <h1>SW Platform Integration Standards</h1>
+            <div class="accent-bar"></div>
+            <p class="subtitle">
+                Formal integration standards for external entities exposing services to the SW platform. 
+                Explore interactive API documentation, test endpoints, and integrate seamlessly with our standardized framework.
+            </p>
+            <div style="display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
+                <a href="pages/getting-started.html" class="btn btn-primary">
+                    <i class="fas fa-rocket"></i> Get Started
+                </a>
+                <a href="pages/interactive-api.html" class="btn btn-secondary">
+                    <i class="fas fa-play-circle"></i> Try Interactive API
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="content">
+        <aside class="sidebar">
+            <div class="sidebar-title">Quick Links</div>
+            <ul class="sidebar-nav">
+                <li><a href="#overview" class="active">Overview</a></li>
+                <li><a href="#apis">API Services</a></li>
+                <li><a href="#features">Key Features</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <section id="overview" style="margin-bottom: 3rem;">
+                <h2>Introduction</h2>
+                <div class="card">
+                    <p>This document defines the formal integration standards for external entities exposing services to the SW platform. The SW platform consumes external entity APIs using standardized payload structures and shared OpenAPI (Swagger) specifications.</p>
+                    <p style="margin-top: 1rem;">This guide describes integration architecture, responsibilities, security requirements, and operational expectations. Detailed endpoint schemas are defined in the attached Swagger specifications.</p>
+                </div>
+            </section>
+
+            <section id="apis" style="margin-bottom: 3rem;">
+                <h2>Available API Services</h2>
+                <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">External entities implement these APIs for SW platform integration:</p>
+                
+                <div class="api-card">
+                    <div><div class="api-method method-post">POST</div></div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 0.5rem;">Request Submission API</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Submit approval request data including request info, applicant details, company information, and approval forms.</div>
+                    </div>
+                    <div><i class="fas fa-arrow-right" style="color: var(--sdlc-light-blue);"></i></div>
+                </div>
+
+                <div class="api-card">
+                    <div><div class="api-method method-post">POST</div></div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 0.5rem;">Request Completion API</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Complete approval requests with payment details and receipt information.</div>
+                    </div>
+                    <div><i class="fas fa-arrow-right" style="color: var(--sdlc-light-blue);"></i></div>
+                </div>
+
+                <div class="api-card">
+                    <div><div class="api-method method-post">POST</div></div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 0.5rem;">Cancel Request API</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Cancel an existing approval request using the approvalRequestId.</div>
+                    </div>
+                    <div><i class="fas fa-arrow-right" style="color: var(--sdlc-light-blue);"></i></div>
+                </div>
+
+                <div class="api-card">
+                    <div><div class="api-method method-post">POST</div></div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 0.5rem;">Manual Approval API</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">Submit manual approval data with approval number, validity dates, and attachments.</div>
+                    </div>
+                    <div><i class="fas fa-arrow-right" style="color: var(--sdlc-light-blue);"></i></div>
+                </div>
+
+                <div class="api-card">
+                    <div><div class="api-method method-post">POST</div></div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 0.5rem;">Approval Decisions Callback</div>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">SW-provided callback API for approval decision updates (APPROVED/REJECTED/RETURNED).</div>
+                    </div>
+                    <div><i class="fas fa-arrow-right" style="color: var(--sdlc-light-blue);"></i></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="accent-bar" style="margin: 0 auto 1rem;"></div>
+            <p>© 2026 SWAAIS API Documentation</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">Powered by SDLC Brand Standards</p>
+        </div>
+    </footer>
+</body>
+</html>
